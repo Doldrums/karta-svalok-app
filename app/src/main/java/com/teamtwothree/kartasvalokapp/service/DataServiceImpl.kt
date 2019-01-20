@@ -64,7 +64,8 @@ class DataServiceImpl(override val kodein: Kodein) : DataService, KodeinAware {
             GlobalScope.launch {
                 val id = ksApi.postReport(body.setType(MediaType.get("multipart/form-data")).build()).await()
                 getPointDetails(id).observeOnce(Observer {
-                    it?.also { this@apply.postValue(id) }
+                    it?.also {
+                        this@apply.postValue(id) }
                 })
             }
         }
@@ -78,8 +79,10 @@ class DataServiceImpl(override val kodein: Kodein) : DataService, KodeinAware {
 fun <T> LiveData<T>.observeOnce(observer: Observer<T>) {
     observeForever(object : Observer<T> {
         override fun onChanged(t: T?) {
-            observer.onChanged(t)
-            removeObserver(this)
+            if (t != null) {
+                observer.onChanged(t)
+                removeObserver(this)
+            }
         }
     })
 }

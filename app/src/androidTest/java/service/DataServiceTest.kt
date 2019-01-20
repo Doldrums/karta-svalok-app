@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 
-class DataServiceImplTest {
+class DataServiceTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -62,7 +62,7 @@ class DataServiceImplTest {
     fun postReport() =
         runBlocking {
             val id = getResultOrNull(dataService.postReport(report))
-            Assert.assertTrue(id?.isNotBlank()!!)
+            Assert.assertTrue(!id.isNullOrBlank())
         }
 
     @Test
@@ -91,7 +91,7 @@ class DataServiceImplTest {
                 latch.countDown()
             }
         }
-        latch.await(5, TimeUnit.SECONDS)
+        latch.await(10, TimeUnit.SECONDS)
         return result
     }
 }
