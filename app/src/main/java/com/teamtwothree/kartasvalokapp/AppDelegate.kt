@@ -1,10 +1,14 @@
 package com.teamtwothree.kartasvalokapp
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
+import com.google.gson.Gson
+import com.teamtwothree.kartasvalokapp.db.KSDao
 import com.teamtwothree.kartasvalokapp.db.KSDatabase
 import com.teamtwothree.kartasvalokapp.di.networkModule
 import org.kodein.di.Kodein
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.singleton
 
 class AppDelegate : Application() {
 
@@ -13,9 +17,11 @@ class AppDelegate : Application() {
 
         val kodein: Kodein = Kodein {
             import(networkModule)
-            Room.databaseBuilder(this@AppDelegate, KSDatabase::class.java, "ksdb")
-                .fallbackToDestructiveMigration()
-                .build()
+            bind<KSDao>() with singleton {
+                Room.databaseBuilder(this@AppDelegate, KSDatabase::class.java, "ksdb")
+                    .fallbackToDestructiveMigration()
+                    .build().getKSDao()
+            }
         }
     }
 
