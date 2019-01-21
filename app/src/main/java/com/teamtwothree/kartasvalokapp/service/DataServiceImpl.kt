@@ -22,6 +22,8 @@ import java.io.File
 
 class DataServiceImpl(override val kodein: Kodein) : DataService, KodeinAware {
 
+    override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
+
     val ksApi: KSApi by kodein.instance()
     val ksDao: KSDao by kodein.instance()
 
