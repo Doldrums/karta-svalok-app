@@ -15,12 +15,8 @@ import retrofit2.Call
  */
 interface DataService {
     /**
-     * Method for future AR integration. Returns List<[Point]>
-     */
-    fun getAllPoints(): LiveData<List<Point>>
-    /**
      * Gets [PointDetails] info from server API and saves to local DB
-     * @param report [Report] to be posted
+     * @param id String with id of requested point
      * @return [PointDetails] from updated DB
      */
     fun getPointDetails(id: String): LiveData<PointDetails>
@@ -35,10 +31,6 @@ interface DataService {
      */
     fun postReport(report: Report): LiveData<String>
     /**
-     * Method for Test Server only. Flushes current remote database state
-     */
-    fun flushPoints(): Call<Void>
-    /**
      * Returns [UserInfo] from local DB
      */
     fun getUserInfo(): LiveData<UserInfo>
@@ -46,4 +38,13 @@ interface DataService {
      * Stores [UserInfo] in local DB
      */
     fun saveUserInfo(userInfo: UserInfo)
+
+    /**
+     * TESTING API: Method for future AR integration. Returns List<[Point]>
+     */
+    fun getAllPoints(): LiveData<List<Point>>
+    /**
+     * TESTING API: Method for Test Server only. Flushes current remote database state
+     */
+    fun flushPoints(): Call<Void>
 }
