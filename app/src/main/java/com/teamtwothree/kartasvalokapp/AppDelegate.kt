@@ -1,6 +1,7 @@
 package com.teamtwothree.kartasvalokapp
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
 import com.teamtwothree.kartasvalokapp.db.KSDao
@@ -8,10 +9,21 @@ import com.teamtwothree.kartasvalokapp.db.KSDatabase
 import com.teamtwothree.kartasvalokapp.di.networkModule
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
+import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 class AppDelegate : Application() {
+    init {
+        instance = this
+    }
 
+    companion object {
+        private lateinit var instance: AppDelegate
+
+        fun applicationContext() : Context {
+            return instance.applicationContext
+        }
+    }
     override fun onCreate() {
         super.onCreate()
 
@@ -22,6 +34,7 @@ class AppDelegate : Application() {
                     .fallbackToDestructiveMigration()
                     .build().getKSDao()
             }
+            bind<AppDelegate>() with provider { this@AppDelegate }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.teamtwothree.kartasvalokapp.service
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import com.teamtwothree.kartasvalokapp.model.point.Point
 import com.teamtwothree.kartasvalokapp.model.point.PointDetails
@@ -47,4 +48,6 @@ interface DataService {
      * TESTING API: Method for Test Server only. Flushes current remote database state
      */
     fun flushPoints(): Call<Void>
+
+//    fun getSanctionedDumps(): LiveData<List<Location>>
 }
