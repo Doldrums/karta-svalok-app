@@ -7,6 +7,8 @@ import com.google.gson.Gson
 import com.teamtwothree.kartasvalokapp.db.KSDao
 import com.teamtwothree.kartasvalokapp.db.KSDatabase
 import com.teamtwothree.kartasvalokapp.di.networkModule
+import com.teamtwothree.kartasvalokapp.service.ValidationService
+import com.teamtwothree.kartasvalokapp.service.ValidationServiceImpl
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.provider
@@ -35,6 +37,7 @@ class AppDelegate : Application() {
                     .build().getKSDao()
             }
             bind<AppDelegate>() with provider { this@AppDelegate }
+            bind<ValidationService>() with singleton { ValidationServiceImpl() }
         }
     }
 
