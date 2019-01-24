@@ -3,6 +3,7 @@ package com.teamtwothree.kartasvalokapp.service
 import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import com.google.firebase.firestore.GeoPoint
 
 interface ValidationService {
     /**
@@ -25,4 +26,8 @@ interface ValidationService {
      *  @return [ValidationState] of operation
      */
     fun isNotAlreadyReported(location: Location): LiveData<ValidationState>
+
+    fun isUnsanctioned(lat: Double, lng: Double): LiveData<ValidationState>
+
+    fun isNotAlreadyReported(lat: Double, lng: Double): LiveData<ValidationState>
 }

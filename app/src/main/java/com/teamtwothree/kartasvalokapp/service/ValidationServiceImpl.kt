@@ -34,8 +34,15 @@ class ValidationServiceImpl : ValidationService {
     override fun isNotAlreadyReported(location: Location): LiveData<ValidationState> =
         detectNearPointsInFirestore(location, unsanctionedFirestore)
 
+    override fun isNotAlreadyReported(lat: Double, lng: Double): LiveData<ValidationState> =
+        detectNearPointsInFirestore(lat, lng, unsanctionedFirestore)
+
     override fun isUnsanctioned(location: Location): LiveData<ValidationState> =
         detectNearPointsInFirestore(location, sanctionedFirestore)
+
+    override fun isUnsanctioned(lat: Double, lng: Double): LiveData<ValidationState>  =
+        detectNearPointsInFirestore(lat, lng, sanctionedFirestore)
+
 
     private fun detectNearPointsInFirestore(location: Location, store: GeoFirestore) : LiveData<ValidationState> {
         val result = MutableLiveData<ValidationState>()
@@ -72,6 +79,20 @@ class ValidationServiceImpl : ValidationService {
     }
 
     private fun hasDump(labels: List<String>) = labels.intersect(KEYWORDS).isNotEmpty()
+
+
+    private fun detectNearPointsInFirestore(lat: Double, lng: Double, store: GeoFirestore) : LiveData<ValidationState> {
+        val result = MutableLiveData<ValidationState>()
+        val geoQuery = store.queryAtLocation(GeoPoint(lat, lng), DETECTION_RADIUS)
+        result.postValue(ValidationState.VALIDATING)
+        geoQuery.addGeoQueryEventListener(GeoPointListener {
+            if (it.isNotEmpty()) result.postValue(ValidationState.FAILED)
+            else result.postValue(ValidationState.SUCCESS)
+            geoQuery.removeAllListeners()
+        })
+        return result
+    }
+
 }
 
 open class GeoPointListener(val onReady: (Map<String, GeoPoint>) -> Unit) : GeoQueryEventListener {
@@ -87,6 +108,6 @@ open class GeoPointListener(val onReady: (Map<String, GeoPoint>) -> Unit) : GeoQ
         //TODO: implement error handling
     }
     override fun onKeyEntered(key: String?, point: GeoPoint?) {
-        point?.also { geoPoints.remove(key) }
+        point?.also { key?.also{ geoPoints[key] = point } }
     }
 }
