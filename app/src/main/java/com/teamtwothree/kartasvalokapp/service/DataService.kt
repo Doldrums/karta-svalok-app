@@ -1,11 +1,9 @@
 package com.teamtwothree.kartasvalokapp.service
 
 import androidx.lifecycle.LiveData
-import com.teamtwothree.kartasvalokapp.model.point.Point
 import com.teamtwothree.kartasvalokapp.model.point.PointDetails
 import com.teamtwothree.kartasvalokapp.model.report.Report
 import com.teamtwothree.kartasvalokapp.model.user.UserInfo
-import kotlinx.coroutines.Deferred
 import retrofit2.Call
 
 /**
@@ -15,13 +13,14 @@ import retrofit2.Call
  */
 interface DataService {
     /**
-     * Gets [PointDetails] info from server API and saves to local DB
+     * Fetches [PointDetails] info from server API and saves to local DB
      * @param id String with id of requested point
      * @return [PointDetails] from updated DB
      */
     fun getPointDetails(id: String): LiveData<PointDetails>
     /**
-     * Returns a List<[PointDetails]>
+     * Fetches all reports that were previously sent from app and saved into local db.
+     * @return List<[PointDetails]> containing all reports
      */
     fun getAllPointDetails(): LiveData<List<PointDetails>>
     /**
@@ -31,20 +30,17 @@ interface DataService {
      */
     fun postReport(report: Report): LiveData<String>
     /**
-     * Returns [UserInfo] from local DB
+     * Fetches User information stored in a local db
+     * @return [UserInfo] from local DB
      */
     fun getUserInfo(): LiveData<UserInfo>
     /**
-     * Stores [UserInfo] in local DB
+     * Stores [UserInfo] in local db
+     * @param userInfo [UserInfo] to store
      */
     fun saveUserInfo(userInfo: UserInfo)
-
     /**
-     * TESTING API: Method for future AR integration. Returns List<[Point]>
-     */
-    fun getAllPoints(): LiveData<List<Point>>
-    /**
-     * TESTING API: Method for Test Server only. Flushes current remote database state
+     * TESTING implementation: Method for Test Server only. Flushes current remote db
      */
     fun flushPoints(): Call<Void>
 }

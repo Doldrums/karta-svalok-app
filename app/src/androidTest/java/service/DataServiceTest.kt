@@ -8,11 +8,10 @@ import androidx.test.core.app.ApplicationProvider
 import com.teamtwothree.kartasvalokapp.db.KSDao
 import com.teamtwothree.kartasvalokapp.db.KSDatabase
 import com.teamtwothree.kartasvalokapp.di.networkModule
-import com.teamtwothree.kartasvalokapp.model.point.PointDetails
 import com.teamtwothree.kartasvalokapp.model.report.Report
 import com.teamtwothree.kartasvalokapp.model.user.UserInfo
 import com.teamtwothree.kartasvalokapp.service.DataService
-import com.teamtwothree.kartasvalokapp.service.DataServiceImpl
+import com.teamtwothree.kartasvalokapp.service.FirebaseDataService
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.kodein.di.Kodein
@@ -50,7 +49,7 @@ class DataServiceTest {
             }
             bind<KSDao>() with singleton { instance<KSDatabase>().getKSDao() }
         }
-        dataService = DataServiceImpl(kodein)
+        dataService = FirebaseDataService(kodein)
     }
 
     @After

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1036165956901",
+    "firebase_url": "https://ecoreport-10c2e.firebaseio.com",
+    "project_id": "ecoreport-10c2e",
+    "storage_bucket": "ecoreport-10c2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036165956901:android:840079ad00fbead1",
+        "android_client_info": {
+          "package_name": "com.teamtwothree.kartasvalokapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036165956901-t8pco090vidt54r3tfimh13adn2ese8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4PxI3h7fvu4RbqJ2Yc0nvnlxY5920RsQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
