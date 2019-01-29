@@ -20,17 +20,12 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import java.io.File
 
-class DataServiceImpl(override val kodein: Kodein) : DataService, KodeinAware {
+class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAware {
 
     override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
 
     val ksApi: KSApi by kodein.instance()
     val ksDao: KSDao by kodein.instance()
-
-    override fun getAllPoints(): LiveData<List<Point>> {
-        GlobalScope.launch { ksDao.insertPoints(ksApi.getAllPoints().await()) }
-        return ksDao.getAllPoints()
-    }
 
     override fun flushPoints() = ksApi.deleteAllPoints()
 

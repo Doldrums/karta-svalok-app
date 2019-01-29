@@ -1,27 +1,15 @@
 package service
 
 import android.content.Context
-import android.location.Location
-import android.location.LocationManager
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.teamtwothree.kartasvalokapp.AppDelegate
-import com.teamtwothree.kartasvalokapp.db.KSDao
-import com.teamtwothree.kartasvalokapp.db.KSDatabase
-import com.teamtwothree.kartasvalokapp.di.networkModule
-import com.teamtwothree.kartasvalokapp.service.DataServiceImpl
 import com.teamtwothree.kartasvalokapp.service.ValidationService
-import com.teamtwothree.kartasvalokapp.service.ValidationServiceImpl
+import com.teamtwothree.kartasvalokapp.service.FirebaseValidationService
 import com.teamtwothree.kartasvalokapp.service.ValidationState
 import kotlinx.coroutines.runBlocking
 import org.junit.*
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -30,8 +18,7 @@ class ValidationServiceTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    val service : ValidationService = ValidationServiceImpl()
-    val locationManager = AppDelegate.applicationContext().getSystemService(Context.LOCATION_SERVICE)
+    val service : ValidationService = FirebaseValidationService()
 
     @Test
     fun returnFailedOnAlreadyReportedCloserThan200() =

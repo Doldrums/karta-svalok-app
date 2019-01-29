@@ -17,10 +17,9 @@ import java.lang.Exception
 val KEYWORDS = listOf("junk", "dump", "scrapyard")
 const val SANCTIONED = "sanctioned"
 const val UNSANCTIONED = "unsanctioned"
-//Validation radius in kilometers
 const val DETECTION_RADIUS = 0.2
 
-class ValidationServiceImpl : ValidationService {
+class FirebaseValidationService : ValidationService {
 
     private val db = FirebaseFirestore.getInstance()
     private val sanctionedFirestore = GeoFirestore(db.collection(SANCTIONED))
