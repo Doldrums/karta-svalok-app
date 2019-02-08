@@ -43,4 +43,6 @@ interface DataService {
      * TESTING implementation: Method for Test Server only. Flushes current remote db
      */
     fun flushPoints(): Call<Void>
+
+    fun getUserInfoBlocking(): UserInfo
 }

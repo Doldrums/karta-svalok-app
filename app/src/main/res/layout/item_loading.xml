@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.budiyev.android.circularprogressbar.CircularProgressBar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/progress_bar"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        app:animateProgress="true"
+        app:backgroundStrokeColor="@color/colorPrimaryDark"
+        app:backgroundStrokeWidth="1dp"
+        app:drawBackgroundStroke="false"
+        app:foregroundStrokeCap="butt"
+        app:foregroundStrokeColor="@color/colorPrimary"
+        app:foregroundStrokeWidth="1dp"
+        app:indeterminate="true"
+        app:indeterminateRotationAnimationDuration="1200"
+        app:indeterminateSweepAnimationDuration="600"
+        app:indeterminateMinimumAngle="45"
+        app:startAngle="270"
+        android:layout_margin="8dp"
+/>

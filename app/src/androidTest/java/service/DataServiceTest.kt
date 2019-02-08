@@ -11,7 +11,7 @@ import com.teamtwothree.kartasvalokapp.di.networkModule
 import com.teamtwothree.kartasvalokapp.model.report.Report
 import com.teamtwothree.kartasvalokapp.model.user.UserInfo
 import com.teamtwothree.kartasvalokapp.service.DataService
-import com.teamtwothree.kartasvalokapp.service.FirebaseDataService
+import com.teamtwothree.kartasvalokapp.service.data.FirebaseDataService
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.kodein.di.Kodein

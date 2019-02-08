@@ -27,6 +27,9 @@ interface KSDao {
     @Query("select * from user_info where id = 0")
     fun getUserInfo(): LiveData<UserInfo>
 
+    @Query("select * from user_info where id = 0")
+    fun getUserInfoBlocking(): UserInfo
+
     @Query("select * from point_details where id = :id")
     fun getPointDetailsById(id: String): LiveData<PointDetails>
 

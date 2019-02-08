@@ -1,31 +1,29 @@
-package com.teamtwothree.kartasvalokapp.service
+package com.teamtwothree.kartasvalokapp.service.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.teamtwothree.kartasvalokapp.AppDelegate
 import com.teamtwothree.kartasvalokapp.api.KSApi
 import com.teamtwothree.kartasvalokapp.db.KSDao
-import com.teamtwothree.kartasvalokapp.model.point.Point
 import com.teamtwothree.kartasvalokapp.model.point.PointDetails
 import com.teamtwothree.kartasvalokapp.model.report.Report
 import com.teamtwothree.kartasvalokapp.model.user.UserInfo
-import kotlinx.coroutines.Deferred
+import com.teamtwothree.kartasvalokapp.service.DataService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.MultipartBody
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import java.io.File
 
-class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAware {
+class FirebaseDataService : DataService {
 
     override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
 
-    val ksApi: KSApi by kodein.instance()
-    val ksDao: KSDao by kodein.instance()
+    val ksApi: KSApi by AppDelegate.getKodein().instance()
+    val ksDao: KSDao by AppDelegate.getKodein().instance()
 
     override fun flushPoints() = ksApi.deleteAllPoints()
 
@@ -52,8 +50,8 @@ class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAwar
             body.addPart(
                 MultipartBody.Part.createFormData(
                     "photo",
-                    it,
-                    RequestBody.create(MediaType.parse("image/*"), File(it))
+                    it.toString(),
+                    RequestBody.create(MediaType.parse("image/*"), File(it.toString()))
                 )
             )
         }
@@ -70,6 +68,7 @@ class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAwar
 
     override fun getUserInfo(): LiveData<UserInfo> = ksDao.getUserInfo()
     override fun saveUserInfo(userInfo: UserInfo) = ksDao.insertUserInfo(userInfo)
+    override fun getUserInfoBlocking(): UserInfo = ksDao.getUserInfoBlocking()
 
 }
 

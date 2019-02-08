@@ -1,9 +1,8 @@
 package com.teamtwothree.kartasvalokapp.service
 
-import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.google.firebase.firestore.GeoPoint
+import com.teamtwothree.kartasvalokapp.service.common.OperationState
 
 /**
  * Service for remote db interactions. Contain methods to determine if the location
@@ -12,28 +11,28 @@ import com.google.firebase.firestore.GeoPoint
 interface ValidationService {
     /**
      *  Detects if user location is near sanctioned dump
-     *  @param location current user [Location]
-     *  @return [ValidationState] of operation
+     *  @return [OperationState] of operation
      */
-    fun isUnsanctioned(location: Location): LiveData<ValidationState>
+    fun isUnsanctioned(): LiveData<OperationState>
     /**
      *  Detects if supplied images contain a dump (image recognition implementation)
      *  @param imageUris [List] with image [Uri]s to analyze
-     *  @return [ValidationState] of operation
+     *  @return [OperationState] of operation
      */
-    fun imageContainsDump(imageUris: List<Uri>): LiveData<ValidationState>
+    fun imageContainsDump(imageUris: List<Uri>): LiveData<OperationState>
     /**
      *  Detects whether there is an already reported unsanctioned dump on user's location
-     *  @param location current user [Location]
-     *  @return [ValidationState] of operation
+     *  @return [OperationState] of operation
      */
-    fun isNotAlreadyReported(location: Location): LiveData<ValidationState>
+    fun isNotAlreadyReported(): LiveData<OperationState>
     /**
      *  TESTING implementation: DO NOT USE, will be removed during development
      */
-    fun isUnsanctioned(lat: Double, lng: Double): LiveData<ValidationState>
+    fun isUnsanctioned(lat: Double, lng: Double): LiveData<OperationState>
     /**
      *  TESTING implementation: DO NOT USE, will be removed during development
      */
-    fun isNotAlreadyReported(lat: Double, lng: Double): LiveData<ValidationState>
+    fun isNotAlreadyReported(lat: Double, lng: Double): LiveData<OperationState>
+
+    fun getImageLabels(imageUri: Uri): LiveData<List<String>>
 }
