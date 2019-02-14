@@ -19,7 +19,7 @@
 
 
             <TextView android:layout_width="match_parent"
-                      android:text="Welcome"
+                      android:text="@string/start_welcome"
                       android:textStyle="bold"
                       android:textSize="26sp"
                       android:layout_margin="20dp"
@@ -35,7 +35,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="Name"
+                        android:hint="@string/start_name"
                         android:inputType="textPersonName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -52,7 +52,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="Login"
+                        android:hint="@string/start_login"
                         android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -68,7 +68,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="Phone number"
+                        android:hint="@string/start_phone_number"
                         android:inputType="phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -78,7 +78,7 @@
 
 
             <Button
-                    android:text="Sign In"
+                    android:text="@string/start_btn_sign_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_login"
