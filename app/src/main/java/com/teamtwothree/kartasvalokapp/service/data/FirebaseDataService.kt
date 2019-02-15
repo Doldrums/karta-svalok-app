@@ -1,33 +1,25 @@
-package com.teamtwothree.kartasvalokapp.service
+package com.teamtwothree.kartasvalokapp.service.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import com.teamtwothree.kartasvalokapp.AppDelegate
 import com.teamtwothree.kartasvalokapp.api.KSApi
 import com.teamtwothree.kartasvalokapp.db.KSDao
-import com.teamtwothree.kartasvalokapp.model.point.Point
 import com.teamtwothree.kartasvalokapp.model.point.PointDetails
 import com.teamtwothree.kartasvalokapp.model.report.Report
 import com.teamtwothree.kartasvalokapp.model.user.UserInfo
-import kotlinx.coroutines.Deferred
+import com.teamtwothree.kartasvalokapp.service.DataService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.MultipartBody
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import java.io.File
 
-class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAware {
+class FirebaseDataService : DataService {
 
-    override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
-
-    val ksApi: KSApi by kodein.instance()
-    val ksDao: KSDao by kodein.instance()
-
-    override fun flushPoints() = ksApi.deleteAllPoints()
+    private val ksApi: KSApi by AppDelegate.getKodein().instance()
+    private val ksDao: KSDao by AppDelegate.getKodein().instance()
 
     override fun getPointDetails(id: String): LiveData<PointDetails> {
         GlobalScope.launch {
@@ -36,7 +28,7 @@ class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAwar
         return ksDao.getPointDetailsById(id)
     }
 
-    override fun postReport(report: Report): LiveData<String> {
+    override suspend fun postReport(report: Report): String {
         val body = MultipartBody.Builder().addFormDataPart("subject", report.subject)
             .addFormDataPart("address", report.address)
             .addFormDataPart("region_name", report.regionName)
@@ -52,34 +44,20 @@ class FirebaseDataService(override val kodein: Kodein) : DataService, KodeinAwar
             body.addPart(
                 MultipartBody.Part.createFormData(
                     "photo",
-                    it,
-                    RequestBody.create(MediaType.parse("image/*"), File(it))
+                    File(it.path).path,
+                    RequestBody.create(MediaType.parse("image/*"), File(it.path))
                 )
             )
         }
-        return MutableLiveData<String>().apply {
-            GlobalScope.launch {
-                val id = ksApi.postReport(body.setType(MediaType.get("multipart/form-data")).build()).await()
-                getPointDetails(id).observeOnce(Observer {
-                    it?.also {
-                        this@apply.postValue(id) }
-                })
-            }
-        }
+
+        val id = ksApi.postReport(body.setType(MediaType.get("multipart/form-data")).build()).await()
+        ksDao.insertPointDetails(ksApi.getPointDetails(id).await())
+        return id
     }
 
+    override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
     override fun getUserInfo(): LiveData<UserInfo> = ksDao.getUserInfo()
     override fun saveUserInfo(userInfo: UserInfo) = ksDao.insertUserInfo(userInfo)
-
-}
-
-fun <T> LiveData<T>.observeOnce(observer: Observer<T>) {
-    observeForever(object : Observer<T> {
-        override fun onChanged(t: T?) {
-            if (t != null) {
-                observer.onChanged(t)
-                removeObserver(this)
-            }
-        }
-    })
+    override fun getUserInfoBlocking(): UserInfo = ksDao.getUserInfoBlocking()
+    override fun flushPoints() = ksApi.deleteAllPoints()
 }

@@ -11,7 +11,7 @@ import com.teamtwothree.kartasvalokapp.di.networkModule
 import com.teamtwothree.kartasvalokapp.model.report.Report
 import com.teamtwothree.kartasvalokapp.model.user.UserInfo
 import com.teamtwothree.kartasvalokapp.service.DataService
-import com.teamtwothree.kartasvalokapp.service.FirebaseDataService
+import com.teamtwothree.kartasvalokapp.service.data.FirebaseDataService
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.kodein.di.Kodein
@@ -49,7 +49,7 @@ class DataServiceTest {
             }
             bind<KSDao>() with singleton { instance<KSDatabase>().getKSDao() }
         }
-        dataService = FirebaseDataService(kodein)
+        dataService = FirebaseDataService()
     }
 
     @After
@@ -60,14 +60,14 @@ class DataServiceTest {
     @Test
     fun postReport() =
         runBlocking {
-            val id = getResultOrNull(dataService.postReport(report))
+            val id = dataService.postReport(report)
             Assert.assertTrue(!id.isNullOrBlank())
         }
 
     @Test
     fun getReport() =
         runBlocking {
-            val id = getResultOrNull(dataService.postReport(report))
+            val id = dataService.postReport(report)
             val pointDetails = id?.let { getResultOrNull(dataService.getPointDetails(id)) }
             Assert.assertTrue(pointDetails?.id == id)
         }
@@ -75,7 +75,7 @@ class DataServiceTest {
     @Test
     fun getAll() =
         runBlocking {
-            val id = getResultOrNull(dataService.postReport(report))
+            val id =dataService.postReport(report)
             val list = getResultOrNull(dataService.getAllPointDetails())
             Assert.assertTrue(list?.get(0)?.id == id)
         }

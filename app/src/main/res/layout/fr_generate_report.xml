@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.teamtwothree.kartasvalokapp.service.common.OperationState"/>
+        <variable
+                name="vm"
+                type="com.teamtwothree.kartasvalokapp.presentation.generation.GeneratorViewModel"/>
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+                                                   android:orientation="vertical"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+
+
+    <com.budiyev.android.circularprogressbar.CircularProgressBar
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/generate_report_progress"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:animateProgress="true"
+            app:backgroundStrokeColor="@color/colorPrimaryDark"
+            app:backgroundStrokeWidth="4dp"
+            app:drawBackgroundStroke="false"
+            app:foregroundStrokeCap="butt"
+            app:foregroundStrokeColor="@color/colorPrimary"
+            app:foregroundStrokeWidth="4dp"
+            app:indeterminate="true"
+            app:indeterminateRotationAnimationDuration="1200"
+            app:indeterminateSweepAnimationDuration="600"
+            app:indeterminateMinimumAngle="45"
+            app:startAngle="270"
+            android:layout_margin="8dp"
+    />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAlignment="center"
+              app:layout_constraintTop_toBottomOf="@id/generate_report_progress"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              android:text="@string/generating_report"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

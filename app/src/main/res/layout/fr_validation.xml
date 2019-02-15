@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.teamtwothree.kartasvalokapp.service.common.OperationState"/>
+        <variable
+                name="vm"
+                type="com.teamtwothree.kartasvalokapp.presentation.validation.ValidationViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+        <TextView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_is_unsanctioned"
+                android:id="@+id/tv_already_reported"
+                android:text="Is already reported"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+
+        <TextView
+                android:id="@+id/validation_already_reported_result"
+                app:layout_constraintTop_toTopOf="@id/tv_already_reported"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:operationResult="@{vm.alreadyReported}"
+                android:visibility="@{vm.isUnsanctioned == OperationState.VALIDATING ? View.GONE : View.VISIBLE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+        />
+
+        <include layout="@layout/item_loading"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintBottom_toTopOf="@id/tv_is_unsanctioned"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:id="@+id/validation_reported_progress"
+                 android:visibility="@{vm.alreadyReported == OperationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
+
+        <TextView
+                android:id="@+id/tv_is_unsanctioned"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_already_reported"
+                app:layout_constraintBottom_toTopOf="@id/tv_contains_dump"
+                android:text="Is unsanctioned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+
+        <TextView
+                android:id="@+id/validation_is_unsanctioned_result"
+                app:layout_constraintTop_toTopOf="@id/tv_is_unsanctioned"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:operationResult="@{vm.isUnsanctioned}"
+                android:visibility="@{vm.isUnsanctioned == OperationState.VALIDATING ? View.GONE : View.VISIBLE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+
+        <include layout="@layout/item_loading"
+                 android:id="@+id/validation_unsanctioned_progress"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toBottomOf="@id/validation_reported_progress"
+                 app:layout_constraintBottom_toTopOf="@id/validation_images_progress"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:visibility="@{vm.isUnsanctioned == OperationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
+
+        <TextView
+                android:id="@+id/tv_contains_dump"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_is_unsanctioned"
+                app:layout_constraintBottom_toTopOf="@id/btn_edit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image contains dump"
+                android:layout_margin="8dp"/>
+
+        <TextView
+                android:id="@+id/validation_contains_dump_result"
+                app:layout_constraintTop_toTopOf="@id/tv_contains_dump"
+                app:layout_constraintBottom_toTopOf="@id/btn_edit_report"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:operationResult="@{vm.containsDump}"
+                android:visibility="@{vm.containsDump == OperationState.VALIDATING ? View.GONE : View.VISIBLE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+
+        <include layout="@layout/item_loading"
+                 android:id="@+id/validation_images_progress"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toBottomOf="@id/validation_unsanctioned_progress"
+                 app:layout_constraintBottom_toTopOf="@id/btn_edit_report"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:visibility="@{vm.containsDump == OperationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
+
+        <include layout="@layout/edit_report"
+                 android:id="@+id/report_form"
+                 app:report="@{vm.report}"
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 app:layout_constraintTop_toBottomOf="@id/btn_edit_report"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 android:visibility="@{vm.editMode ? View.VISIBLE : View.GONE}"/>
+
+        <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/btn_edit_report"
+                android:text="Edit Report"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_post_report"
+                app:layout_constraintTop_toBottomOf="@id/tv_contains_dump"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:onClick="@{() -> vm.editReport()}"/>
+
+        <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/btn_post_report"
+                android:text="Post Report"
+                app:layout_constraintStart_toEndOf="@id/btn_edit_report"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_contains_dump"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:onClick="@{() -> vm.sendReport()}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

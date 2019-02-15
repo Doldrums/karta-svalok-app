@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">KartaSvalokApp</string>
+    <string name="report_subject">Pollution report</string>
+    <string name="report_description">Pollution at %1$s</string>
+    <string name="generating_report">Generating report</string>
 </resources>

@@ -23,6 +23,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding{
+        enabled = true
+    }
+
 
 }
 
@@ -33,10 +37,14 @@ dependencies {
     /* do not raise to alpha, it has FragmentManager bug! */
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'com.google.android.material:material:1.1.0-alpha03'
+
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     /* testing */
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.test:core:1.1.0'
+    testImplementation 'org.mockito:mockito-core:2.17.0'
     testImplementation 'org.mockito:mockito-core:2.17.0'
     androidTestImplementation "androidx.test.ext:junit:1.1.0"
 //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -47,7 +55,6 @@ dependencies {
     /* kodein di */
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.0.1'
     implementation 'org.kodein.di:kodein-di-framework-android-support:6.0.1'
-
     /* net */
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
@@ -64,6 +71,7 @@ dependencies {
     /* other */
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
     /* google services */
     implementation 'com.google.firebase:firebase-core:16.0.6'
@@ -71,4 +79,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
     implementation 'com.google.firebase:firebase-firestore:17.1.5'
     implementation 'com.github.imperiumlabs:GeoFirestore-Android:1.1.1'
+
+    implementation 'com.budiyev.android:circular-progress-bar:1.2.2'
 }
