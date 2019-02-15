@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.teamtwothree.kartasvalokapp.AppActivity
 import com.teamtwothree.kartasvalokapp.AppDelegate
 import com.teamtwothree.kartasvalokapp.R
 import com.teamtwothree.kartasvalokapp.databinding.FrGenerateReportBinding

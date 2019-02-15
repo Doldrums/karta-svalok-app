@@ -25,23 +25,8 @@ class PointDetailsHolder(private val view: View) : RecyclerView.ViewHolder(view)
         view.tv_report_description.text = pointDetails.description
         view.tv_report_comment.text = pointDetails.comment
 
-        for (photo in pointDetails.photo) {
-            val imageViewParams = ViewGroup.LayoutParams(dipsToPixels(128f), dipsToPixels(192f))
-            val imageView = ImageView(AppDelegate.applicationContext()).also { it.layoutParams = imageViewParams }
-            imageView.layoutParams = imageViewParams
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            Glide.with(view).load(BuildConfig.API_URL + photo).into(imageView)
-            view.report_layout_photo.addView(imageView)
-        }
-
-        for (photo in pointDetails.photoAdmin) {
-            val imageViewParams = ViewGroup.LayoutParams(dipsToPixels(128f), dipsToPixels(192f))
-            val imageView = ImageView(AppDelegate.applicationContext()).also { it.layoutParams = imageViewParams }
-            imageView.layoutParams = imageViewParams
-            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            Glide.with(view).load(BuildConfig.API_URL + photo).into(imageView)
-            view.report_layout_photo_admin.addView(imageView)
-        }
+        spawnPhotosInParent(pointDetails.photo, view.report_layout_photo)
+        spawnPhotosInParent(pointDetails.photoAdmin, view.report_layout_photo_admin)
 
         view.setOnClickListener {
             //onClickListener: ReportsAdapter.OnItemClickListener
@@ -63,5 +48,16 @@ class PointDetailsHolder(private val view: View) : RecyclerView.ViewHolder(view)
     private fun dipsToPixels(sizeInDp: Float): Int =
         (sizeInDp * AppDelegate.applicationContext().resources.displayMetrics.density + 0.5f).toInt()
 
+
+    private fun spawnPhotosInParent(list: List<String>, parent: ViewGroup) {
+        for (photo in list) {
+            val imageViewParams = ViewGroup.LayoutParams(dipsToPixels(128f), dipsToPixels(192f))
+            val imageView = ImageView(AppDelegate.applicationContext()).also { it.layoutParams = imageViewParams }
+            imageView.layoutParams = imageViewParams
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(view).load(BuildConfig.API_URL + photo).into(imageView)
+            parent.addView(imageView)
+        }
+    }
 }
 

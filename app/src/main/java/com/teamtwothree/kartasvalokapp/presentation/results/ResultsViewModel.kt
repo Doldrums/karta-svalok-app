@@ -12,12 +12,4 @@ class ResultsViewModel: ViewModel() {
     private val dataService: DataService by AppDelegate.getKodein().instance()
     val reports: LiveData<List<PointDetails>> = dataService.getAllPointDetails()
 
-    fun expandReport(position: Int) {
-
-    }
-
-    fun collapseReport(position: Int) {
-
-    }
-
 }

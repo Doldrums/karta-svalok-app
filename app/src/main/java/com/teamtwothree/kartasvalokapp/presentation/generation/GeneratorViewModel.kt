@@ -6,6 +6,6 @@ import com.teamtwothree.kartasvalokapp.service.ReportService
 import org.kodein.di.generic.instance
 
 class GeneratorViewModel: ViewModel() {
-    val generatorService: ReportService by AppDelegate.getKodein().instance()
+    private val generatorService: ReportService by AppDelegate.getKodein().instance()
     val generatorState = generatorService.getState()
 }

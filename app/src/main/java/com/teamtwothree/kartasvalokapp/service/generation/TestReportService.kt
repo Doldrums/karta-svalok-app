@@ -23,7 +23,6 @@ import java.util.*
 
 class TestReportService : ReportService {
 
-    private val dataService: DataService by AppDelegate.getKodein().instance()
     private val geocoder = Geocoder(AppDelegate.applicationContext(), Locale.getDefault())
     private val locationProvider: FusedLocationProviderClient by AppDelegate.getKodein().instance()
 

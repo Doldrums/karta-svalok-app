@@ -30,8 +30,8 @@ class ValidationViewModel : ViewModel() {
 
     val editMode = MutableLiveData<Boolean>().also { it.postValue(false) }
 
-    val validationErrors = StringBuilder()
-    val formErrors = MutableLiveData<MutableMap<String, String>>().also { it.postValue(mutableMapOf()) }
+    private val validationErrors = StringBuilder()
+    private val formErrors = MutableLiveData<MutableMap<String, String>>().also { it.postValue(mutableMapOf()) }
 
     fun editReport() = editMode.postValue(true)
 

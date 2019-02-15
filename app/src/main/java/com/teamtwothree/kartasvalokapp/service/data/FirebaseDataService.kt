@@ -18,8 +18,8 @@ import java.io.File
 
 class FirebaseDataService : DataService {
 
-    val ksApi: KSApi by AppDelegate.getKodein().instance()
-    val ksDao: KSDao by AppDelegate.getKodein().instance()
+    private val ksApi: KSApi by AppDelegate.getKodein().instance()
+    private val ksDao: KSDao by AppDelegate.getKodein().instance()
 
     override fun getPointDetails(id: String): LiveData<PointDetails> {
         GlobalScope.launch {

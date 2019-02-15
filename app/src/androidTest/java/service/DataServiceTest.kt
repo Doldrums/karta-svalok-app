@@ -60,14 +60,14 @@ class DataServiceTest {
     @Test
     fun postReport() =
         runBlocking {
-            val id = getResultOrNull(dataService.postReport(report))
+            val id = dataService.postReport(report)
             Assert.assertTrue(!id.isNullOrBlank())
         }
 
     @Test
     fun getReport() =
         runBlocking {
-            val id = getResultOrNull(dataService.postReport(report))
+            val id = dataService.postReport(report)
             val pointDetails = id?.let { getResultOrNull(dataService.getPointDetails(id)) }
             Assert.assertTrue(pointDetails?.id == id)
         }
@@ -75,7 +75,7 @@ class DataServiceTest {
     @Test
     fun getAll() =
         runBlocking {
-            val id = getResultOrNull(dataService.postReport(report))
+            val id =dataService.postReport(report)
             val list = getResultOrNull(dataService.getAllPointDetails())
             Assert.assertTrue(list?.get(0)?.id == id)
         }
