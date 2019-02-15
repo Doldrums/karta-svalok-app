@@ -14,4 +14,8 @@ class ReportsAdapter(var items: List<PointDetails>) : RecyclerView.Adapter<Point
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: PointDetailsHolder, position: Int) = holder.bind(items[position])
+
+    interface OnItemClickListener {
+        fun onClick(position: Int)
+    }
 }

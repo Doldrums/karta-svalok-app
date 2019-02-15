@@ -18,7 +18,7 @@ class ResultsFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FrResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fr_results, container, false)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.vm = resultsViewModel
         return binding.root
     }

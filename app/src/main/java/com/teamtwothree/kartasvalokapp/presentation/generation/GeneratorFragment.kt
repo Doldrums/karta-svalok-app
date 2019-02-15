@@ -22,7 +22,7 @@ class GeneratorFragment: DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FrGenerateReportBinding = DataBindingUtil.inflate(inflater, R.layout.fr_generate_report, container, false)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         val viewModel = ViewModelProviders.of(this).get(GeneratorViewModel::class.java)
         binding.vm = viewModel
         viewModel.generatorState.observe(this, Observer {

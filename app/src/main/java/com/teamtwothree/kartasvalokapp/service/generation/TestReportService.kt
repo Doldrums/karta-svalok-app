@@ -11,6 +11,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.teamtwothree.kartasvalokapp.AppDelegate
 import com.teamtwothree.kartasvalokapp.R
 import com.teamtwothree.kartasvalokapp.model.report.Report
+import com.teamtwothree.kartasvalokapp.model.user.UserInfo
 import com.teamtwothree.kartasvalokapp.service.DataService
 import com.teamtwothree.kartasvalokapp.service.ReportService
 import com.teamtwothree.kartasvalokapp.service.common.OperationState
@@ -42,7 +43,6 @@ class TestReportService : ReportService {
 
         GlobalScope.launch {
             try {
-                var address = "Undefined location"
                 if (ContextCompat.checkSelfPermission(
                         AppDelegate.applicationContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -50,33 +50,36 @@ class TestReportService : ReportService {
                     == PackageManager.PERMISSION_GRANTED
                 ) {
                     locationProvider.lastLocation.addOnSuccessListener {
-                        address = geocoder.getFromLocation(it.latitude, it.longitude, 1)[0].toString()
+                        val addr = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+                        //val user = dataService.getUserInfoBlocking()
+                        val user = UserInfo("test", "test@test.io", "+71234567890")
+
+                        pendingReport = Report(
+                            AppDelegate.applicationContext().getString(R.string.report_subject),
+                            String.format(AppDelegate.applicationContext().getString(R.string.report_description), addr[0].getAddressLine(0)),
+                            addr[0].getAddressLine(0),
+                            user.name,
+                            user.email,
+                            user.phone,
+                            addr[0].adminArea,
+                            "1",
+                            "0",
+                            it.latitude.toString() + "," + it.longitude.toString(),
+                            photo
+                        )
+                        generationState.postValue(OperationState.SUCCESS)
                     }
                 }
-                val subject = AppDelegate.applicationContext().getString(R.string.report_subject)
-                val description =
-                    String.format(AppDelegate.applicationContext().getString(R.string.report_description), address)
-                val user = dataService.getUserInfoBlocking()
 
 
-                pendingReport = Report(
-                    subject,
-                    description,
-                    address,
-                    user.name,
-                    user.email,
-                    user.phone,
-                    "rgn",
-                    "1",
-                    "0",
-                    "",
-                    photo
-                )
-                generationState.postValue(OperationState.SUCCESS)
+
+
             } catch (ex: Exception) {
                 generationState.postValue(OperationState.FAILED)
             }
         }
     }
+
+
 
 }

@@ -14,6 +14,7 @@ import com.teamtwothree.kartasvalokapp.service.generation.TestReportService
 import com.teamtwothree.kartasvalokapp.service.validation.FirebaseValidationService
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
@@ -46,9 +47,6 @@ class AppDelegate : Application() {
         fun getKodein() : Kodein {
             return instance.kodein
         }
-    }
-    override fun onCreate() {
-        super.onCreate()
     }
 
 }

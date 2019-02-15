@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_already_reported"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:operationResult="@{vm.alreadyReported}"
-                android:visibility="@{vm.isUnsanctioned == ValidationState.VALIDATING ? View.GONE : View.VISIBLE}"
+                android:visibility="@{vm.isUnsanctioned == OperationState.VALIDATING ? View.GONE : View.VISIBLE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -43,7 +43,7 @@
                  app:layout_constraintBottom_toTopOf="@id/tv_is_unsanctioned"
                  app:layout_constraintEnd_toEndOf="parent"
                  android:id="@+id/validation_reported_progress"
-                 android:visibility="@{vm.alreadyReported == ValidationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
+                 android:visibility="@{vm.alreadyReported == OperationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
 
         <TextView
                 android:id="@+id/tv_is_unsanctioned"
@@ -60,7 +60,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_is_unsanctioned"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:operationResult="@{vm.isUnsanctioned}"
-                android:visibility="@{vm.isUnsanctioned == ValidationState.VALIDATING ? View.GONE : View.VISIBLE}"
+                android:visibility="@{vm.isUnsanctioned == OperationState.VALIDATING ? View.GONE : View.VISIBLE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"/>
@@ -72,7 +72,7 @@
                  app:layout_constraintTop_toBottomOf="@id/validation_reported_progress"
                  app:layout_constraintBottom_toTopOf="@id/validation_images_progress"
                  app:layout_constraintEnd_toEndOf="parent"
-                 android:visibility="@{vm.isUnsanctioned == ValidationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
+                 android:visibility="@{vm.isUnsanctioned == OperationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
 
         <TextView
                 android:id="@+id/tv_contains_dump"
@@ -90,7 +90,7 @@
                 app:layout_constraintBottom_toTopOf="@id/btn_edit_report"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:operationResult="@{vm.containsDump}"
-                android:visibility="@{vm.containsDump == ValidationState.VALIDATING ? View.GONE : View.VISIBLE}"
+                android:visibility="@{vm.containsDump == OperationState.VALIDATING ? View.GONE : View.VISIBLE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"/>
@@ -102,7 +102,7 @@
                  app:layout_constraintTop_toBottomOf="@id/validation_unsanctioned_progress"
                  app:layout_constraintBottom_toTopOf="@id/btn_edit_report"
                  app:layout_constraintEnd_toEndOf="parent"
-                 android:visibility="@{vm.containsDump == ValidationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
+                 android:visibility="@{vm.containsDump == OperationState.VALIDATING ? View.VISIBLE : View.GONE}"/>
 
         <include layout="@layout/edit_report"
                  android:id="@+id/report_form"
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-        android:onClick="@{() -> vm.editReport()}"/>
+                android:onClick="@{() -> vm.editReport()}"/>
 
         <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -138,7 +138,8 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"/>
+                android:layout_margin="8dp"
+                android:onClick="@{() -> vm.sendReport()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

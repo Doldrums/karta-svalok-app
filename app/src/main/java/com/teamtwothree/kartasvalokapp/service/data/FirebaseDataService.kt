@@ -1,8 +1,6 @@
 package com.teamtwothree.kartasvalokapp.service.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.teamtwothree.kartasvalokapp.AppDelegate
 import com.teamtwothree.kartasvalokapp.api.KSApi
 import com.teamtwothree.kartasvalokapp.db.KSDao
@@ -20,12 +18,8 @@ import java.io.File
 
 class FirebaseDataService : DataService {
 
-    override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
-
     val ksApi: KSApi by AppDelegate.getKodein().instance()
     val ksDao: KSDao by AppDelegate.getKodein().instance()
-
-    override fun flushPoints() = ksApi.deleteAllPoints()
 
     override fun getPointDetails(id: String): LiveData<PointDetails> {
         GlobalScope.launch {
@@ -34,7 +28,7 @@ class FirebaseDataService : DataService {
         return ksDao.getPointDetailsById(id)
     }
 
-    override fun postReport(report: Report): LiveData<String> {
+    override suspend fun postReport(report: Report): String {
         val body = MultipartBody.Builder().addFormDataPart("subject", report.subject)
             .addFormDataPart("address", report.address)
             .addFormDataPart("region_name", report.regionName)
@@ -50,35 +44,20 @@ class FirebaseDataService : DataService {
             body.addPart(
                 MultipartBody.Part.createFormData(
                     "photo",
-                    it.toString(),
-                    RequestBody.create(MediaType.parse("image/*"), File(it.toString()))
+                    File(it.path).path,
+                    RequestBody.create(MediaType.parse("image/*"), File(it.path))
                 )
             )
         }
-        return MutableLiveData<String>().apply {
-            GlobalScope.launch {
-                val id = ksApi.postReport(body.setType(MediaType.get("multipart/form-data")).build()).await()
-                getPointDetails(id).observeOnce(Observer {
-                    it?.also {
-                        this@apply.postValue(id) }
-                })
-            }
-        }
+
+        val id = ksApi.postReport(body.setType(MediaType.get("multipart/form-data")).build()).await()
+        ksDao.insertPointDetails(ksApi.getPointDetails(id).await())
+        return id
     }
 
+    override fun getAllPointDetails(): LiveData<List<PointDetails>> = ksDao.getAllPointDetails()
     override fun getUserInfo(): LiveData<UserInfo> = ksDao.getUserInfo()
     override fun saveUserInfo(userInfo: UserInfo) = ksDao.insertUserInfo(userInfo)
     override fun getUserInfoBlocking(): UserInfo = ksDao.getUserInfoBlocking()
-
-}
-
-fun <T> LiveData<T>.observeOnce(observer: Observer<T>) {
-    observeForever(object : Observer<T> {
-        override fun onChanged(t: T?) {
-            if (t != null) {
-                observer.onChanged(t)
-                removeObserver(this)
-            }
-        }
-    })
+    override fun flushPoints() = ksApi.deleteAllPoints()
 }

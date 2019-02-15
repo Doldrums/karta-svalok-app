@@ -14,6 +14,7 @@ import com.teamtwothree.kartasvalokapp.service.ReportService
 import com.teamtwothree.kartasvalokapp.service.ValidationService
 import org.kodein.di.generic.instance
 import com.teamtwothree.kartasvalokapp.presentation.generation.GeneratorFragment
+import com.teamtwothree.kartasvalokapp.presentation.results.ResultsFragment
 import com.teamtwothree.kartasvalokapp.service.AppStateService
 import com.teamtwothree.kartasvalokapp.service.common.AppState
 
@@ -30,7 +31,7 @@ class AppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app)
         FirebaseApp.initializeApp(this)
-        
+
         appService.appState.observe(this, Observer { changeAppState(it) })
     }
 
@@ -40,14 +41,16 @@ class AppActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment).commit()
+    }
+
     fun changeAppState(state: AppState) =
             when (state) {
-                AppState.GENERATION -> {
-                    val path =  "file://" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + "/171006-443-to7bN83pAcHC3CgI.JPG"
-                    reportService.newReport(listOf(Uri.parse(path)))
-                    setFragment(GeneratorFragment())
-                }
-                AppState.VALIDATION -> setFragment(ValidationFragment())
+                AppState.GENERATION -> replaceFragment(GeneratorFragment())
+                AppState.VALIDATION -> replaceFragment(ValidationFragment())
+                AppState.HISTORY -> replaceFragment(ResultsFragment())
             }
 
 }

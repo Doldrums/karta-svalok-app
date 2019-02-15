@@ -17,7 +17,7 @@ class ValidationFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FrValidationBinding = DataBindingUtil.inflate(inflater, R.layout.fr_validation, container, false)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.vm = ViewModelProviders.of(this).get(ValidationViewModel::class.java)
         return binding.root
     }

@@ -49,7 +49,7 @@ class DataServiceTest {
             }
             bind<KSDao>() with singleton { instance<KSDatabase>().getKSDao() }
         }
-        dataService = FirebaseDataService(kodein)
+        dataService = FirebaseDataService()
     }
 
     @After

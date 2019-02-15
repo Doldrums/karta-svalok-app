@@ -3,10 +3,13 @@ package com.teamtwothree.kartasvalokapp.presentation.validation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.teamtwothree.kartasvalokapp.AppDelegate
+import com.teamtwothree.kartasvalokapp.service.AppStateService
 import com.teamtwothree.kartasvalokapp.service.DataService
 import com.teamtwothree.kartasvalokapp.service.ReportService
 import com.teamtwothree.kartasvalokapp.service.ValidationService
 import com.teamtwothree.kartasvalokapp.service.common.OperationState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
 import java.lang.StringBuilder
 
@@ -15,12 +18,14 @@ class ValidationViewModel : ViewModel() {
     private val validationService: ValidationService by AppDelegate.getKodein().instance()
     private val dataService: DataService by AppDelegate.getKodein().instance()
     private val reportService: ReportService by AppDelegate.getKodein().instance()
+    private val appStateService: AppStateService by AppDelegate.getKodein().instance()
 
     val report = reportService.getReport()
 
     val isUnsanctioned = validationService.isUnsanctioned()
     val alreadyReported = validationService.isNotAlreadyReported()
     val containsDump = validationService.imageContainsDump(report.photo)
+
 
 
     val editMode = MutableLiveData<Boolean>().also { it.postValue(false) }
@@ -33,7 +38,10 @@ class ValidationViewModel : ViewModel() {
 
     fun sendReport() {
         if (validateReport() && validateForm()) {
-            dataService.postReport(report)
+            GlobalScope.launch {
+                dataService.postReport(report)
+                appStateService.showHistory()
+            }
         } else {
             displayErrors()
         }
